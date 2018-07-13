@@ -17,9 +17,34 @@ int main(int argc, string argv[]) {
         }
 
         string keyword = argv[1];
-        printf("%s", keyword);
+        printf("keyword text: %s", keyword);
         string plainText = get_string("plaintext: ");
-        printf("End of program %s", plainText);
+        char cipherText[30] = "";
+        int keyLength = strlen(keyword);
+        int plainLength = strlen(plainText);
+        for (int i = 0, k = 0; i < plainLength; i++) {
+        if (!isalpha(plainText[i])) {
+            cipherText[i] = plainText[i];
+        } else if (isupper(plainText[i])) {
+            k = (int)keyword[i%keyLength] - 65;
+            int c = (int)plainText[i] - 65;
+            int converted = (c + k) % 26;
+            converted = converted + 65;
+            char temp = (char)converted;
+            cipherText[i] = temp;
+            // ascii starts at 65 for caps, A = 0 using mod 26 to wrap things around and ensure still upper.
+        }
+        else {
+            k = (int)keyword[i%keyLength] - 97;
+            int c = (int)plainText[i] - 97;
+            int converted = (c + k) % 26;
+            converted = converted + 97;
+            char temp = (char)converted;
+            cipherText[i] = temp;
+            // ascii starts at 97 for lower, a = 0 using mod 26 to wrap things around and ensure still lower.
+            }
+        }
+        printf("ciphertext: %s\n", cipherText);
         return 0;
     }
 }
